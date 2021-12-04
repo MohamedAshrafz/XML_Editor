@@ -91,7 +91,7 @@ public class NetworkAnalysis {
 					if (tags.get(j).equals( "<follower>") ) {
 						currentCounter++;
 					
-                    /* </followers> closing tag found, compare current with maximum and reset counter */
+                    			/* </followers> closing tag found, compare current with maximum and reset counter */
 					}else if (tags.get(j).equals( "</followers>") ) {
 						mostInfluencer = (currentCounter > mostInfluencer) ? currentCounter : mostInfluencer;
 						currentCounter=0;
