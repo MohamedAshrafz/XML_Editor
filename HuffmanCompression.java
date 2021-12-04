@@ -1,22 +1,22 @@
 import java.io.*;
-import java.util.*;
+import java.util.PriorityQueue;
 
 public class HuffmanCompression {
     private static final int DATA_RANGE = 256;
-    private static final char NEWLINE = '\n';
 
     private HuffmanCompression() {
     }
 
-    public static File compress(File f) {
+    public static void compress() {
 
         // build the char[] input
-        char[] input = toCharArr(f);
-
+        String s = CustomStdIn.readString();
+        CustomStdIn.close();
+        char[] inputChars = s.toCharArray();
 
         int[] freq = new int[DATA_RANGE];
-        for (int i = 0; i < input.length; i++)
-            freq[input[i]]++;
+        for (int i = 0; i < inputChars.length; i++)
+            freq[inputChars[i]]++;
 
         // build Huffman trie
         Node root = buildTrie(freq);
@@ -25,24 +25,50 @@ public class HuffmanCompression {
         String[] symbolTable = new String[DATA_RANGE];
         buildCodeTable(symbolTable, root, "");
 
-        File output = new File("D:\\Data structure and Algorithms\\summar training" +
-                "\\sources\\Data Structure and Algorithm Project\\src\\fileOutput.txt");
 
-        try (FileOutputStream fos = new FileOutputStream(output);
-             DataOutputStream dos = new DataOutputStream(fos)) {
+        // write trie in output file for decoding
+        writeTrie(root);
 
-            // write trie in output file for decoding
-            writeTrie(root, dos);
+        // write the length of the input stream for decoding
+        CustomStdOut.write(inputChars.length);
 
-        } catch (IOException e) {
-            e.printStackTrace();
+        // use huffman compression to encode the output
+        for (int i = 0; i < inputChars.length; i++) {
+            String code = symbolTable[inputChars[i]];
+            for (int j = 0; j < code.length(); j++) {
+                if (code.charAt(j) == '1')
+                    CustomStdOut.write(true);
+                else if (code.charAt(j) == '0')
+                    CustomStdOut.write(false);
+                else
+                    throw new IllegalStateException("either 0 or 1, illegal state");
+            }
         }
 
-
-        //
-
-        return f;
+        CustomStdOut.close();
     }
+
+    public static void compress(File input, File output){
+        InputStream orgInStream = System.in;
+        PrintStream orgOutStream = System.out;
+
+        try {
+            System.setIn(new FileInputStream(input));
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        }
+        try {
+            System.setOut(new PrintStream(output));
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        }
+        compress();
+
+        System.setIn(orgInStream);
+        System.setOut(orgOutStream);
+
+    }
+
 
     private static Node buildTrie(int[] freq) {
         // using priority queue
@@ -61,6 +87,17 @@ public class HuffmanCompression {
         return pqNodes.poll();
     }
 
+    private static void writeTrie(Node node) {
+        if (node.isLeaf()) {
+            CustomStdOut.write(true);
+            CustomStdOut.write(node.ch);
+            return;
+        }
+        CustomStdOut.write(false);
+        writeTrie(node.left);
+        writeTrie(node.right);
+    }
+
     private static void buildCodeTable(String[] symbolTable, Node node, String code) {
         if (!node.isLeaf()) {
             buildCodeTable(symbolTable, node.left, code + '0');
@@ -70,11 +107,57 @@ public class HuffmanCompression {
         }
     }
 
-    private static void writeTrie(Node node, DataOutputStream dos) throws IOException {
-        if (node.isLeaf()) {
-            dos.writeBoolean(true);
-        } else {
+    public static void expand() {
 
+        // read the Huffman trie first from the input
+        Node root = readTrie();
+
+        // read the length of the stream
+        int length = CustomStdIn.readInt();
+
+        for (int i = 0; i < length; i++) {
+            Node x = root;
+            while (!x.isLeaf()) {
+                // read bit
+                boolean b = CustomStdIn.readBoolean();
+                if (b)
+                    x = x.left;
+                else
+                    x = x.right;
+            }
+            CustomStdOut.write(x.ch);
+        }
+        CustomStdIn.close();
+        CustomStdOut.close();
+    }
+
+    public static void expand(File input, File output){
+        InputStream orgInStream = System.in;
+        PrintStream orgOutStream = System.out;
+
+        try {
+            System.setIn(new FileInputStream(input));
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        }
+        try {
+            System.setOut(new PrintStream(output));
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        }
+        expand();
+
+        System.setIn(orgInStream);
+        System.setOut(orgOutStream);
+
+    }
+
+    private static Node readTrie() {
+        boolean isLeafNode = CustomStdIn.readBoolean();
+        if (isLeafNode) {
+            return new Node(CustomStdIn.readChar(), -1, null, null);
+        } else {
+            return new Node('\0', -1, readTrie(), readTrie());
         }
     }
 
@@ -101,28 +184,14 @@ public class HuffmanCompression {
         }
     }
 
-    private static char[] toCharArr(File f) {
-        StringBuilder strBuilder = new StringBuilder();
-
-        InputStream console = System.in;
-
-        try {
-            System.setIn(new FileInputStream(f));
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        }
-        BufferedInputStream in = new BufferedInputStream(System.in);
-
-        // System.setIn(console);
-        return ((char)in.read()).toCharArray();
-    }
-
 
     public static void main(String[] args) {
 
-        HuffmanCompression.compress(new File("D:\\Data structure and Algorithms\\summar training\\"
-                + "sources\\Data Structure and Algorithm Project\\src\\file.txt"));
+        HuffmanCompression.compress(new File("D:\\Data structure and Algorithms\\summar training\\sources\\Data Structure and Algorithm Project\\src\\file.txt"),
+                new File("D:\\Data structure and Algorithms\\summar training\\sources\\Data Structure and Algorithm Project\\src\\fileOutput.txt"));
 
 
+        HuffmanCompression.expand(new File("D:\\Data structure and Algorithms\\summar training\\sources\\Data Structure and Algorithm Project\\src\\fileOutput.txt"),
+                new File("D:\\Data structure and Algorithms\\summar training\\sources\\Data Structure and Algorithm Project\\src\\expanded.txt"));
     }
 }
