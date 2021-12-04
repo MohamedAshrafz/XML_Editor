@@ -48,7 +48,7 @@ public class HuffmanCompression {
         CustomStdOut.close();
     }
 
-    public static void compress(File input, File output){
+    public static void compress(File input, File output) {
         InputStream orgInStream = System.in;
         PrintStream orgOutStream = System.out;
 
@@ -121,9 +121,9 @@ public class HuffmanCompression {
                 // read bit
                 boolean b = CustomStdIn.readBoolean();
                 if (b)
-                    x = x.left;
-                else
                     x = x.right;
+                else
+                    x = x.left;
             }
             CustomStdOut.write(x.ch);
         }
@@ -131,7 +131,7 @@ public class HuffmanCompression {
         CustomStdOut.close();
     }
 
-    public static void expand(File input, File output){
+    public static void expand(File input, File output) {
         InputStream orgInStream = System.in;
         PrintStream orgOutStream = System.out;
 

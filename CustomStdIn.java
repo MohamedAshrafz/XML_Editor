@@ -17,11 +17,11 @@ public class CustomStdIn {
         in = new BufferedInputStream(System.in);
         buffer = 0;
         n = 0;
-        fullBuffer();
+        fillBuffer();
         isInitialized = true;
     }
 
-    private static void fullBuffer() {
+    private static void fillBuffer() {
         try {
             buffer = in.read();
             n = 8;
@@ -51,7 +51,7 @@ public class CustomStdIn {
         if (isEmpty()) throw new NoSuchElementException("The input stream is empty");
         n--;
         boolean bit = ((buffer >> n) & 1) == 1;
-        if (n == 0) fullBuffer();
+        if (n == 0) fillBuffer();
         return bit;
     }
 
@@ -59,14 +59,13 @@ public class CustomStdIn {
         if (isEmpty()) throw new NoSuchElementException("Reading from empty input stream");
         if (n == 8) {
             int x = buffer;
-            fullBuffer();
+            fillBuffer();
             return (char) (x & 0xff);
         }
 
-        int x = (buffer >> n);
-        x <<= (8 - 1);
+        int x = (buffer <<= (8 - n));
         int preN = n;
-        fullBuffer();
+        fillBuffer();
         if (isEmpty()) throw new NoSuchElementException("Reading from empty input stream");
         n = preN;
         x |= (buffer >>> n);
