@@ -127,7 +127,7 @@ public class HuffmanCompression {
             }
             CustomStdOut.write(x.ch);
         }
-        CustomStdIn.close();
+
         CustomStdOut.close();
     }
 
