@@ -7,10 +7,23 @@ public class ConsistencyCheck {
 		/* example XML  that should be taken as input */
 		String s = "<users><id>1</id>\n<name>Ahmed Ali</name></users>";
 		
+		if (checkBalancedTags(s)){
+			System.out.println("Tags are balanced");
+		} else{
+			System.out.println("Tags are NOT balanced");
+		}
+	}
+	
+	/*
+	 * Desc: A function that takes a string and checks if tags are balanced or not,
+	 * 			return true if balanced, false otherwise
+	 * */
+	public static boolean checkBalancedTags(String xml){
+
 		Stack<String> tagStack = new Stack<String> ();
 		
 		/* extract tags from file */
-		ArrayList<String> strTags = commonMethods.getTags(s);
+		ArrayList<String> strTags = commonMethods.getTags(xml);
 		
 		/* adding tags to stack */
 		for (int i=0; i< strTags.size(); i++) {
@@ -30,14 +43,13 @@ public class ConsistencyCheck {
 			}
 		}
 		
-		if (tagStack.isEmpty()) {
-			System.out.println("Tags are balanced");
-		}
-		else {
-			System.out.println("Tags are NOT balanced");
+		if (tagStack.isEmpty()){
+			return true;
+		}else{
+			return false;
 		}
 	}
-	
+
 
 	/*
 	 * Desc: return true if the XML is an opening tag
