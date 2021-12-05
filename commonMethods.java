@@ -3,7 +3,7 @@ import java.util.*;
 /* The class for all common methods across the project */
 public class commonMethods {
     
-    /*
+    	/*
 	 * Desc: A function that takes a string and returns an array of tags in that string
 	 * */
 	public static ArrayList<String> getTags(String s) {
