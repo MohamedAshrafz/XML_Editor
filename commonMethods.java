@@ -10,7 +10,7 @@ public class commonMethods {
 		ArrayList<String> tags= new ArrayList<String>();
 		
 		String tag = "";
-		int j=0, counter=0;
+		int j=0;
 		
 		for (int i=0; i< s.length(); i++) {
 			/* when finding an opening character <, append chars till the closing character > */
@@ -26,7 +26,7 @@ public class commonMethods {
 				tags.add(tag);
 				
 				/* reseting variables */
-				counter++; tag =""; j=0;
+				tag =""; j=0;
 			}
 		}
 		
