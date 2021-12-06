@@ -17,6 +17,8 @@ public class Formatting
 			if (rows[i] == null || rows[i].trim().length() == 0) 
 				continue;
 
+			rows[i] = rows[i].trim();
+			
 			if (rows[i].startsWith("<?"))
 			{
 				sb.append(rows[i] + "\n");
