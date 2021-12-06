@@ -32,4 +32,21 @@ public class commonMethods {
 		
 		return tags;
 	}
+
+
+	/*
+		Decs: return an array of Strings,
+			rows[i] contains: an opening tag, a closing tag, or data.
+	*/
+	public static ArrayList<String> xmlToRows(String xml){
+		String[] rows = xml.trim().replaceAll(">", ">\n").replaceAll("<", "\n<").split("\n");
+		ArrayList<String> nonEmptyRows = new ArrayList<String>();
+		for (String s : rows){
+			if (!s.isEmpty()){
+				nonEmptyRows.add(s);
+			}
+		}
+		/* try to delete empty rows */
+		return nonEmptyRows;
+	}
 }

@@ -23,24 +23,25 @@ public class ConsistencyCheck {
 		Stack<String> tagStack = new Stack<String> ();
 		
 		/* extract tags from file */
-		ArrayList<String> strTags = commonMethods.getTags(xml);
+		ArrayList<String> xmlRows = commonMethods.xmlToRows(xml);
 		
 		/* adding tags to stack */
-		for (int i=0; i< strTags.size(); i++) {
-			String currentTag = strTags.get(i);
+		for (int i=0; i< xmlRows.size() ; i++) {
+			String currentRow = xmlRows.get(i);
 			
 			/* if the tag is opening, just push to stack */
-			if (isOpeningTag(currentTag)) {
-				tagStack.add(currentTag);
+			if (isOpeningTag(currentRow)) {
+				tagStack.add(currentRow);
 				
-			}else {
+			}else if (isClosingTag(currentRow)){
 				/* if it's a closing tag,,,
 				 * if it corresponds to the peek tag, then pop the peek
 				 * */
-				if (peekMatchTag(tagStack.peek(), currentTag)) {
+				if (peekMatchTag(tagStack.peek(), currentRow)) {
 					tagStack.pop();
 				}
 			}
+			/* else: row contains data, ignore it */
 		}
 		
 		if (tagStack.isEmpty()){
@@ -56,9 +57,24 @@ public class ConsistencyCheck {
 	 * 			tags are on form: <tagName> </tagName>
 	 * */
 	public static boolean isOpeningTag(String tag) {
-		return (tag.charAt(1) != '/');
+		if (tag.length() > 1){
+			return (tag.charAt(0) == '<' && tag.charAt(1) != '/');
+		}
+		return false;
 	}
-	
+
+
+	/*
+	 * Desc: return true if the XML is a closing tag
+	 * 			tags are on form: <tagName> </tagName>
+	 * */
+	public static boolean isClosingTag(String tag) {
+		if (tag.length() > 1){
+			return (tag.charAt(0) == '<' && tag.charAt(1) == '/');
+		}
+		return false;
+	}
+
 	
 	/*
 	 * Desc: return true if the closing tag {tag} corresponds to the opening tag {stackPeek}
