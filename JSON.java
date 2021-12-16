@@ -27,11 +27,17 @@ public class JSON {
         return "{\n" + sb + "\n}";
     }
 
-
+    private static String repeat(String st, int count){
+        StringBuilder sb = new StringBuilder();
+        for(int i=0; i<count; i++){
+            sb.append(st);
+        }
+        return sb.toString();
+    }
     private static void treeToJSON(Node node, int tabCount, StringBuilder ans) {
         tabCount++;
 
-        ans.append("    ".repeat(tabCount));
+        ans.append(repeat("    ", tabCount));
         if (node.type == NodeType.DATA) {
             ans.append("\"" + node.data + "\"");
             return;
@@ -57,7 +63,7 @@ public class JSON {
                 ans.append(", \n");
             else {
                 ans.append('\n');
-                ans.append("    ".repeat(tabCount));
+                ans.append(repeat("    ", tabCount));
 
                 if (node.type == NodeType.REPEATEDTAG)
                     ans.append("]");
