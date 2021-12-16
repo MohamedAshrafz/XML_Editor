@@ -27,7 +27,7 @@ public class JSON {
         return "{\n" + sb + "\n}";
     }
 
-    private String repeat(String st, int count){
+    private static String repeat(String st, int count){
         StringBuilder sb = new StringBuilder();
         for(int i=0; i<count; i++){
             sb.append(st);
