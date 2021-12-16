@@ -23,7 +23,9 @@ public class Controller {
         fileChooser.setInitialDirectory(new File("src\\sample"));
 
         FileChooser.ExtensionFilter extFilter = new FileChooser.ExtensionFilter("TXT files (*.txt)", "*.txt");
+        FileChooser.ExtensionFilter extFilter2 = new FileChooser.ExtensionFilter("XML files (*.xml)", "*.xml");
         fileChooser.getExtensionFilters().add(extFilter);
+        fileChooser.getExtensionFilters().add(extFilter2);
 
         input = fileChooser.showOpenDialog(new Stage());
 
@@ -48,7 +50,9 @@ public class Controller {
         fileChooser.setInitialDirectory(new File("src\\sample"));
 
         FileChooser.ExtensionFilter extFilter = new FileChooser.ExtensionFilter("TXT files (*.txt)", "*.txt");
+        FileChooser.ExtensionFilter extFilter2 = new FileChooser.ExtensionFilter("XML files (*.xml)", "*.xml");
         fileChooser.getExtensionFilters().add(extFilter);
+        fileChooser.getExtensionFilters().add(extFilter2);
 
         output = fileChooser.showSaveDialog(new Stage());
 
@@ -105,7 +109,9 @@ public class Controller {
         fileChooser.setInitialDirectory(new File("src\\sample"));
 
         FileChooser.ExtensionFilter extFilter = new FileChooser.ExtensionFilter("TXT files (*.txt)", "*.txt");
+        FileChooser.ExtensionFilter extFilter2 = new FileChooser.ExtensionFilter("XML files (*.xml)", "*.xml");
         fileChooser.getExtensionFilters().add(extFilter);
+        fileChooser.getExtensionFilters().add(extFilter2);
 
         output = fileChooser.showSaveDialog(new Stage());
 
@@ -142,7 +148,9 @@ public class Controller {
         fileChooser.setInitialDirectory(new File("src\\sample"));
 
         FileChooser.ExtensionFilter extFilter = new FileChooser.ExtensionFilter("TXT files (*.txt)", "*.txt");
+        FileChooser.ExtensionFilter extFilter2 = new FileChooser.ExtensionFilter("XML files (*.xml)", "*.xml");
         fileChooser.getExtensionFilters().add(extFilter);
+        fileChooser.getExtensionFilters().add(extFilter2);
 
         File originalFile, newFile;
 
