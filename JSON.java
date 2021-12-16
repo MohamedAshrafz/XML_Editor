@@ -32,7 +32,7 @@ public class JSON {
         for(int i=0; i<count; i++){
             sb.append(st);
         }
-        return sb;
+        return sb.toString();
     }
     private static void treeToJSON(Node node, int tabCount, StringBuilder ans) {
         tabCount++;
