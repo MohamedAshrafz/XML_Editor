@@ -1,25 +1,27 @@
-
-import javafx.application.Application;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
-import javafx.scene.Parent;
-import javafx.scene.Scene;
-import javafx.scene.control.Button;
-import javafx.scene.control.TextArea;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 
+import java.awt.*;
 import java.io.File;
 
-public class Controller{
+public class Controller {
 
 
     @FXML
     Button button = new Button();
+
     @FXML
     TextArea mainTA = new TextArea();
 
+    @FXML
+    TextArea resultTA = new TextArea();
+
+    public void JSONButtonHandler(ActionEvent e) {
+        String xml = mainTA.getText();
+        resultTA.setText(JSON.XMLToJSON(xml));
+    }
 
     public void onCompress(ActionEvent e) {
 
@@ -55,11 +57,10 @@ public class Controller{
         originalFile = fileChooser.showOpenDialog(new Stage());
         newFile = fileChooser.showSaveDialog(new Stage());
 
-        if (originalFile != null && newFile != null){
+        if (originalFile != null && newFile != null) {
             HuffmanCompression.expand(originalFile, newFile);
             mainTA.setText("decompressed successfully");
-        }
-        else {
+        } else {
             mainTA.setText("something went wrong");
         }
     }
