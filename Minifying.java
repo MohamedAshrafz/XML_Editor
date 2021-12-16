@@ -1,7 +1,7 @@
 
 public class Minifying 
 {
-	public String minify(String xml) {
+	public static String minify(String xml) {
 		/* if the XML file is empty */
 		if (xml == null || xml.trim().length() == 0) return "";
 		
@@ -108,6 +108,6 @@ public class Minifying
 				+ "    </user>\r\n"
 				+ "</users>";
 
-		System.out.println(new Minifying().minify(s));
+		System.out.println(Minifying.minify(s));
 	}
 }

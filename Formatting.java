@@ -1,7 +1,7 @@
 
 public class Formatting
 {
-	public String format(String xml) {
+	public static String format(String xml) {
 		/* if the XML file is empty */
 		if (xml == null || xml.trim().length() == 0) return "";
 
@@ -48,7 +48,7 @@ public class Formatting
 		return sb.toString();
 	}
 
-	private String repeatString(int stack) 
+	private static String repeatString(int stack)
 	{
 		StringBuilder indent = new StringBuilder();
 		for (int i = 0; i < stack; i++)
@@ -63,7 +63,7 @@ public class Formatting
 		String s ="<users><user><name>Mohamed</name><id>180</id></user>"
 				+ "<user><name>Ahmed</name><id>200</id></user></users>";
 
-		System.out.println(new Formatting().format(s));
+		System.out.println(Formatting.format(s));
 	}
 }
 
