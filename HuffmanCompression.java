@@ -7,11 +7,8 @@ public class HuffmanCompression {
     private HuffmanCompression() {
     }
 
-    public static void compress() {
+    private static void privateCompress(String s) {
 
-        // build the char[] input
-        String s = CustomStdIn.readString();
-        CustomStdIn.close();
         char[] inputChars = s.toCharArray();
 
         int[] freq = new int[DATA_RANGE];
@@ -44,8 +41,29 @@ public class HuffmanCompression {
                     throw new IllegalStateException("either 0 or 1, illegal state");
             }
         }
-
         CustomStdOut.close();
+    }
+
+    public static void compress(){
+        // build the char[] input
+        String s = CustomStdIn.readString();
+        CustomStdIn.close();
+
+        privateCompress(s);
+    }
+
+    public static void compress(String s, File output){
+
+        PrintStream orgOutStream = System.out;
+
+        try {
+            System.setOut(new PrintStream(output));
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        }
+
+        privateCompress(s);
+        System.setOut(orgOutStream);
     }
 
     public static void compress(File input, File output) {
@@ -127,7 +145,7 @@ public class HuffmanCompression {
             }
             CustomStdOut.write(x.ch);
         }
-
+        CustomStdIn.close();
         CustomStdOut.close();
     }
 
@@ -184,14 +202,13 @@ public class HuffmanCompression {
         }
     }
 
-
     public static void main(String[] args) {
 
-        HuffmanCompression.compress(new File("D:\\Data structure and Algorithms\\summar training\\sources\\Data Structure and Algorithm Project\\src\\file.txt"),
-                new File("D:\\Data structure and Algorithms\\summar training\\sources\\Data Structure and Algorithm Project\\src\\fileOutput.txt"));
+        HuffmanCompression.compress(new File("D:\\Data structure and Algorithms\\summar training\\sources\\Data Structure and Algorithm Project\\src\\fileOutput.txt"),
+                new File("D:\\Data structure and Algorithms\\summar training\\sources\\Data Structure and Algorithm Project\\src\\compressedTwice.txt"));
 
 
-        HuffmanCompression.expand(new File("D:\\Data structure and Algorithms\\summar training\\sources\\Data Structure and Algorithm Project\\src\\fileOutput.txt"),
-                new File("D:\\Data structure and Algorithms\\summar training\\sources\\Data Structure and Algorithm Project\\src\\expanded.txt"));
+        // HuffmanCompression.expand(new File("D:\\Data structure and Algorithms\\summar training\\sources\\Data Structure and Algorithm Project\\src\\fileOutput.txt"),
+           //     new File("D:\\Data structure and Algorithms\\summar training\\sources\\Data Structure and Algorithm Project\\src\\expanded.txt"));
     }
 }

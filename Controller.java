@@ -1,31 +1,37 @@
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.Initializable;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import javafx.scene.control.*;
 
 import java.io.*;
+import java.net.URL;
+import java.util.ResourceBundle;
 
-public class Controller {
+public class Controller implements Initializable {
 
+    FileChooser fileChooser;
     String xml, xmlOut;
-
     File input, output;
 
     @FXML
     TextArea originalTA = new TextArea();
-
     @FXML
     TextArea resultTA = new TextArea();
 
-    public void onLoadXMLFile(ActionEvent e) {
-        FileChooser fileChooser = new FileChooser();
-        fileChooser.setInitialDirectory(new File("src\\sample"));
+    @Override
+    public void initialize(URL location, ResourceBundle resources) {
+        fileChooser = new FileChooser();
+        //fileChooser.setInitialDirectory(new File("src\\sample"));
 
         FileChooser.ExtensionFilter extFilter = new FileChooser.ExtensionFilter("TXT files (*.txt)", "*.txt");
         FileChooser.ExtensionFilter extFilter2 = new FileChooser.ExtensionFilter("XML files (*.xml)", "*.xml");
-        fileChooser.getExtensionFilters().add(extFilter);
         fileChooser.getExtensionFilters().add(extFilter2);
+        fileChooser.getExtensionFilters().add(extFilter);
+    }
+
+    public void onLoadXMLFile(ActionEvent e) {
 
         input = fileChooser.showOpenDialog(new Stage());
 
@@ -46,14 +52,6 @@ public class Controller {
     }
 
     public void onSaveXMLFile(ActionEvent e) {
-
-        FileChooser fileChooser = new FileChooser();
-        fileChooser.setInitialDirectory(new File("src\\sample"));
-
-        FileChooser.ExtensionFilter extFilter = new FileChooser.ExtensionFilter("TXT files (*.txt)", "*.txt");
-        FileChooser.ExtensionFilter extFilter2 = new FileChooser.ExtensionFilter("XML files (*.xml)", "*.xml");
-        fileChooser.getExtensionFilters().add(extFilter);
-        fileChooser.getExtensionFilters().add(extFilter2);
 
         output = fileChooser.showSaveDialog(new Stage());
 
@@ -107,14 +105,6 @@ public class Controller {
 
     public void onCompress(ActionEvent e) {
 
-        FileChooser fileChooser = new FileChooser();
-        fileChooser.setInitialDirectory(new File("src\\sample"));
-
-        FileChooser.ExtensionFilter extFilter = new FileChooser.ExtensionFilter("TXT files (*.txt)", "*.txt");
-        FileChooser.ExtensionFilter extFilter2 = new FileChooser.ExtensionFilter("XML files (*.xml)", "*.xml");
-        fileChooser.getExtensionFilters().add(extFilter);
-        fileChooser.getExtensionFilters().add(extFilter2);
-
         output = fileChooser.showSaveDialog(new Stage());
 
         Alert alert = new Alert(Alert.AlertType.INFORMATION);
@@ -122,7 +112,7 @@ public class Controller {
         alert.setHeaderText("compression status");
 
         if (input != null && output != null) {
-            HuffmanCompression.compress(input, output);
+            HuffmanCompression.compress(xml, output);
             alert.setContentText("compression completed");
 
             InputStream orgInStream = System.in;
@@ -146,14 +136,6 @@ public class Controller {
 
     public void onDecompress(ActionEvent e) {
 
-        FileChooser fileChooser = new FileChooser();
-        fileChooser.setInitialDirectory(new File("src\\sample"));
-
-        FileChooser.ExtensionFilter extFilter = new FileChooser.ExtensionFilter("TXT files (*.txt)", "*.txt");
-        FileChooser.ExtensionFilter extFilter2 = new FileChooser.ExtensionFilter("XML files (*.xml)", "*.xml");
-        fileChooser.getExtensionFilters().add(extFilter);
-        fileChooser.getExtensionFilters().add(extFilter2);
-
         File originalFile, newFile;
 
         originalFile = fileChooser.showOpenDialog(new Stage());
@@ -173,22 +155,19 @@ public class Controller {
             } catch (FileNotFoundException ee) {
                 ee.printStackTrace();
             }
+
             xmlOut = CustomStdIn.readString();
-
             CustomStdIn.close();
-
             originalTA.setText(xmlOut);
-
             try {
                 System.setIn(new FileInputStream(newFile));
             } catch (FileNotFoundException ee) {
                 ee.printStackTrace();
             }
-            xmlOut = CustomStdIn.readString();
 
+            xmlOut = CustomStdIn.readString();
             CustomStdIn.close();
             System.setIn(orgInStream);
-
             resultTA.setText(xmlOut);
         } else {
             alert.setContentText("something went wrong");
