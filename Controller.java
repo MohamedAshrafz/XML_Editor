@@ -42,6 +42,7 @@ public class Controller {
         System.setIn(orgInStream);
 
         originalTA.setText(xml);
+        xml = originalTA.getText();
     }
 
     public void onSaveXMLFile(ActionEvent e) {
@@ -70,7 +71,6 @@ public class Controller {
     }
 
     public void onJSON(ActionEvent e) {
-        xml = originalTA.getText();
         xmlOut = JSON.XMLToJSON(xml);
         resultTA.setText(xmlOut);
     }
