@@ -39,7 +39,7 @@ public class commonMethods {
 			rows[i] contains: an opening tag, a closing tag, or data.
 	*/
 	public static ArrayList<String> xmlToRows(String xml){
-		String[] rows = xml.trim().replaceAll(">", ">\n").replaceAll("<", "\n<").split("\n");
+		String[] rows = xml.trim().replace(" ", "").replaceAll(">", ">\n").replaceAll("<", "\n<").split("\n");
 		ArrayList<String> nonEmptyRows = new ArrayList<String>();
 		for (String s : rows){
 			if (!s.isEmpty()){

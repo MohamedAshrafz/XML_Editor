@@ -4,7 +4,6 @@ import java.util.Stack;
 public class ConsistencyCheck {
 
 	ArrayList<String> rows;
-	ArrayList<String> leftTags = new ArrayList<>(); /* to hold tags that are left in stack [for invalid XML files] */
 
 	ConsistencyCheck(String xml){
 		rows = commonMethods.xmlToRows(xml);
@@ -55,22 +54,12 @@ public class ConsistencyCheck {
 			}
 			/* else: row contains data, ignore it */
 		}
-
-		/* adding left tags to an array */
-		for (String s : tagStack) {
-			leftTags.add(s);
-		}
 		
 		if (tagStack.isEmpty()){
 			return true;
 		}else{
 			return false;
 		}
-	}
-
-
-	public void addLeftTag(String t){
-		leftTags.add(t);
 	}
 
 

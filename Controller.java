@@ -71,11 +71,13 @@ public class Controller {
     }
 
     public void onJSON(ActionEvent e) {
+        xml = originalTA.getText();
         xmlOut = JSON.XMLToJSON(xml);
         resultTA.setText(xmlOut);
     }
 
     public void OnConsistency(ActionEvent e) {
+        xml = originalTA.getText();
         ConsistencyCheck checker = new ConsistencyCheck(xml);
 
         Alert alert = new Alert(Alert.AlertType.INFORMATION);
