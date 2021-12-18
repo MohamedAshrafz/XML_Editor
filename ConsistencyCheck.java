@@ -8,8 +8,17 @@ public class ConsistencyCheck {
 	ArrayList<String> leftTags = new ArrayList<>();
 	int errorsCounter=0;
 
+	
 	ConsistencyCheck(String xml){
-		rows = commonMethods.xmlToRows(xml);
+	
+		String[] rowsArray = xml.trim().replace(" ", "").replaceAll(">", ">\n").replaceAll("<", "\n<").split("\n");
+		ArrayList<String> nonEmptyRows = new ArrayList<String>();
+		/* delete empty rows */
+		for (String s : rowsArray){
+			if (!s.isEmpty()){
+				nonEmptyRows.add(s);
+			}
+		}
 	}
 
 
