@@ -82,7 +82,7 @@ public class Controller implements Initializable {
         alert.setTitle("Consistency check");
         alert.setHeaderText("Consistency check");
 
-        if (checker.checkBalancedTags() && checker.checkValidDataPositions()) {
+        if (checker.checkBalancedTags()) {
             alert.setContentText("XML file is consistent");
         } else {
 
