@@ -2,11 +2,18 @@ import java.util.ArrayList;
 
 public class NetworkAnalysis {
 	
-	ArrayList<String> rows;
+	ArrayList<String> rows = new ArrayList<>();
 
 
 	NetworkAnalysis(String xml){
-		rows = commonMethods.xmlToRows(xml);
+		
+		String[] rowsArray = xml.trim().replace(" ", "").replaceAll(">", ">\n").replaceAll("<", "\n<").split("\n");
+		/* delete empty rows */
+		for (String s : rowsArray){
+			if (!s.isEmpty()){
+				rows.add(s);
+			}
+		}
 	}
 
 
