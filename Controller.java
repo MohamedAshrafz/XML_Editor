@@ -25,101 +25,143 @@ public class Controller implements Initializable {
         fileChooser = new FileChooser();
         //fileChooser.setInitialDirectory(new File("src\\sample"));
 
-        FileChooser.ExtensionFilter extFilter = new FileChooser.ExtensionFilter("TXT files (*.txt)", "*.txt");
-        FileChooser.ExtensionFilter extFilter2 = new FileChooser.ExtensionFilter("XML files (*.xml)", "*.xml");
-        fileChooser.getExtensionFilters().add(extFilter2);
+        FileChooser.ExtensionFilter extFilter = new FileChooser.ExtensionFilter("XML files (*.xml)", "*.xml");
+        FileChooser.ExtensionFilter extFilter2 = new FileChooser.ExtensionFilter("TXT files (*.txt)", "*.txt");
         fileChooser.getExtensionFilters().add(extFilter);
+        fileChooser.getExtensionFilters().add(extFilter2);
     }
 
     public void onLoadXMLFile(ActionEvent e) {
 
         input = fileChooser.showOpenDialog(new Stage());
 
-        InputStream orgInStream = System.in;
-
-        try {
-            System.setIn(new FileInputStream(input));
-        } catch (FileNotFoundException ee) {
-            ee.printStackTrace();
+        if (input != null) {
+            InputStream orgInStream = System.in;
+            try {
+                System.setIn(new FileInputStream(input));
+            } catch (FileNotFoundException ee) {
+                ee.printStackTrace();
+            }
+            xml = CustomStdIn.readString().replaceAll("\r", "");
+            originalTA.setText(xml);
+            CustomStdIn.close();
+            System.setIn(orgInStream);
+        } else {
+            Alert alert = new Alert(Alert.AlertType.INFORMATION);
+            alert.setTitle("Error");
+            alert.setHeaderText("You must provide a file");
+            alert.setContentText("You didn't provide a file");
+            alert.showAndWait();
         }
-        xml = CustomStdIn.readString();
-
-        CustomStdIn.close();
-        System.setIn(orgInStream);
-
-        originalTA.setText(xml);
-        xml = originalTA.getText();
     }
 
     public void onSaveXMLFile(ActionEvent e) {
-
+        xml = originalTA.getText();
         output = fileChooser.showSaveDialog(new Stage());
 
-        PrintStream orgOutStream = System.out;
+        if (output != null) {
+            PrintStream orgOutStream = System.out;
+            try {
+                System.setOut(new PrintStream(output));
+            } catch (FileNotFoundException ee) {
+                ee.printStackTrace();
+            }
+            CustomStdOut.write(xmlOut);
 
-        try {
-            System.setOut(new PrintStream(output));
-        } catch (FileNotFoundException ee) {
-            ee.printStackTrace();
+            CustomStdOut.close();
+            System.setOut(orgOutStream);
+        } else {
+            Alert alert = new Alert(Alert.AlertType.INFORMATION);
+            alert.setTitle("Error");
+            alert.setHeaderText("You must provide a path");
+            alert.setContentText("You didn't provide a path to save the file");
+            alert.showAndWait();
         }
-        CustomStdOut.write(xmlOut);
-
-        CustomStdOut.close();
-        System.setOut(orgOutStream);
     }
 
     public void onJSON(ActionEvent e) {
         xml = originalTA.getText();
-        xmlOut = JSON.XMLToJSON(xml);
-        resultTA.setText(xmlOut);
+        if (checkIfEmpty(xml))
+            return;
+
+        ConsistencyCheck checker = new ConsistencyCheck(xml);
+        if (checker.checkBalancedTags() && !xml.isEmpty()) {
+            xmlOut = JSON.XMLToJSON(xml);
+            resultTA.setText(xmlOut);
+        } else {
+            Alert alert = new Alert(Alert.AlertType.INFORMATION);
+            alert.setTitle("Consistency error");
+            alert.setHeaderText("Not consistent");
+            alert.setContentText("The provided XML has to be consistent to be converted to JSON");
+            alert.showAndWait();
+        }
+
     }
 
     public void OnConsistency(ActionEvent e) {
         xml = originalTA.getText();
+        if (checkIfEmpty(xml))
+            return;
+
         ConsistencyCheck checker = new ConsistencyCheck(xml);
 
         Alert alert = new Alert(Alert.AlertType.INFORMATION);
         alert.setTitle("Consistency check");
         alert.setHeaderText("Consistency check");
 
+        if (xml.isEmpty()) {
+            alert.setContentText("No xml provided");
+            alert.showAndWait();
+            return;
+        }
+
         if (checker.checkBalancedTags()) {
             alert.setContentText("XML file is consistent");
         } else {
+            StringBuilder msg = new StringBuilder();
+            msg.append("Errors count = ").append(checker.errorsCounter)
+                    .append("\n").append("Error/s in the following tag/s:\n");
 
-            String msg="XML file is NOT consistent\n" + 
-            "Errors count = " + Integer.toString(checker.errorsCounter) + "\n" +
-            "Error/s in the following tag/s:\n";
-            
-            for (String s : checker.leftTags){
-                msg += s + "\n";
+            for (String s : checker.leftTags) {
+                msg.append(s).append("\n");
             }
 
-            alert.setContentText(msg);
+            alert.setContentText("XML file is NOT consistent");
+            resultTA.setText(msg.toString());
         }
         alert.showAndWait();
     }
 
-    public void onFormatting(ActionEvent e){
+    public void onFormatting(ActionEvent e) {
         xml = originalTA.getText();
+        if (checkIfEmpty(xml))
+            return;
+
         xmlOut = Formatting.format(xml);
         resultTA.setText(xmlOut);
     }
 
-    public void onMinifying(ActionEvent e){
+    public void onMinifying(ActionEvent e) {
         xml = originalTA.getText();
+        if (checkIfEmpty(xml))
+            return;
+
         xmlOut = Minifying.minify(xml);
         resultTA.setText(xmlOut);
     }
 
     public void onCompress(ActionEvent e) {
-
-        output = fileChooser.showSaveDialog(new Stage());
+        xml = originalTA.getText();
+        if (checkIfEmpty(xml))
+            return;
 
         Alert alert = new Alert(Alert.AlertType.INFORMATION);
         alert.setTitle("compression status");
         alert.setHeaderText("compression status");
 
-        if (input != null && output != null) {
+        output = fileChooser.showSaveDialog(new Stage());
+
+        if (output != null) {
             HuffmanCompression.compress(xml, output);
             alert.setContentText("compression completed");
 
@@ -137,9 +179,9 @@ public class Controller implements Initializable {
 
             resultTA.setText(xmlOut);
         } else {
-            alert.setContentText("something went wrong");
+            alert.setContentText("You didn't provide a path to save the file");
+            alert.showAndWait();
         }
-        alert.showAndWait();
     }
 
     public void onDecompress(ActionEvent e) {
@@ -164,22 +206,33 @@ public class Controller implements Initializable {
                 ee.printStackTrace();
             }
 
-            xmlOut = CustomStdIn.readString();
+            originalTA.setText(CustomStdIn.readString());
             CustomStdIn.close();
-            originalTA.setText(xmlOut);
             try {
                 System.setIn(new FileInputStream(newFile));
             } catch (FileNotFoundException ee) {
                 ee.printStackTrace();
             }
 
-            xmlOut = CustomStdIn.readString();
+            xml = CustomStdIn.readString().replaceAll("\r", "");
             CustomStdIn.close();
             System.setIn(orgInStream);
-            resultTA.setText(xmlOut);
+            resultTA.setText(xml);
         } else {
-            alert.setContentText("something went wrong");
+            alert.setContentText("You didn't provide a path/s to save/load the files");
+            alert.showAndWait();
         }
-        alert.showAndWait();
+    }
+
+    private static boolean checkIfEmpty(String xml) {
+        if (xml.isEmpty()) {
+            Alert alert = new Alert(Alert.AlertType.INFORMATION);
+            alert.setTitle("No XML");
+            alert.setHeaderText("You must private an XML text or file");
+            alert.setContentText("Provide an XML");
+            alert.showAndWait();
+            return true;
+        }
+        return false;
     }
 }
