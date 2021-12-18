@@ -45,7 +45,10 @@ public class ConsistencyCheck {
 				 * */
 				if (peekMatchTag(tagStack.peek(), currentRow)) {
 					tagStack.pop();
+				}else{
+					tagStack.add(currentRow);
 				}
+
 			}
 			/* else: row contains data, ignore it */
 		}
