@@ -48,8 +48,8 @@
                 <Button disable="true" layoutX="39.0" layoutY="537.0" mnemonicParsing="false" prefHeight="31.0" prefWidth="160.0" text="Netowrk Analysis" />
                 <Button layoutX="495.0" layoutY="411.0" mnemonicParsing="false" onAction="#onSaveXMLFile" prefHeight="31.0" prefWidth="160.0" text="Save new XML file" />
                 <Button disable="true" layoutX="39.0" layoutY="580.0" mnemonicParsing="false" prefHeight="31.0" prefWidth="160.0" text="Visualize " />
-                <TextArea fx:id="originalTA" layoutX="39.0" layoutY="78.0" prefHeight="311.0" prefWidth="403.0" promptText="XML original data" />
-                <TextArea fx:id="resultTA" layoutX="495.0" layoutY="78.0" prefHeight="312.0" prefWidth="402.0" promptText="XML file after modifications" />
+                <TextArea fx:id="originalTA" layoutX="39.0" layoutY="78.0" prefHeight="311.0" prefWidth="403.0" promptText="Original XML" />
+                <TextArea fx:id="resultTA" layoutX="495.0" layoutY="78.0" prefHeight="312.0" prefWidth="402.0" promptText="Result of the operation" />
                 <Button layoutX="254.0" layoutY="411.0" mnemonicParsing="false" onAction="#onMinifying" prefHeight="31.0" prefWidth="160.0" text="Minify" />
                 <Button fx:id="button" layoutX="254.0" layoutY="453.0" mnemonicParsing="false" onAction="#onCompress" prefHeight="31.0" prefWidth="160.0" text="Compress" />
                 <Button layoutX="254.0" layoutY="495.0" mnemonicParsing="false" onAction="#onDecompress" prefHeight="31.0" prefWidth="160.0" text="decompress" />

@@ -20,6 +20,7 @@ public class ConsistencyCheck {
 	public boolean checkBalancedTags(){
 
 		Stack<String> tagStack = new Stack<String> ();
+		boolean neverAddAnything = true;
 		
 		/* adding tags to stack */
 		for (int i=0; i< rows.size() ; i++) {
@@ -28,6 +29,7 @@ public class ConsistencyCheck {
 			/* if the tag is opening, just push to stack */
 			if (isOpeningTag(currentRow)) {
 				tagStack.add(currentRow);
+				neverAddAnything = false;
 				
 			}else if (isClosingTag(currentRow)){
 				/* if it's a closing tag,,,
@@ -46,7 +48,7 @@ public class ConsistencyCheck {
 			errorsCounter++;
 		}
 		
-		if (tagStack.isEmpty()){
+		if (tagStack.isEmpty() && !neverAddAnything){
 			return true;
 		}else{
 			return false;
