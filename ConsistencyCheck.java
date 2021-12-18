@@ -4,27 +4,12 @@ import java.util.Stack;
 public class ConsistencyCheck {
 
 	ArrayList<String> rows;
+	/* in case of inconsistency */
+	ArrayList<String> leftTags = new ArrayList<>();
+	int errorsCounter=0;
 
 	ConsistencyCheck(String xml){
 		rows = commonMethods.xmlToRows(xml);
-	}
-	
-
-	/**
-	 * Desc: A function that checks if data is placed in a wrong positions.
-	 * 			if data is in between a closing tag, and an opening tag, then it's invalid.
-	 * 		the function returns true if data positions are valid, false otherwise
-	 */
-	public boolean checkValidDataPositions(){
-		for (int i=0; i< rows.size()-1; i++){
-
-			/** if current row is a closing tag, and the following row contains data */
-			if (isClosingTag(rows.get(i)) && checkData(rows.get(i+1))){
-				return false;
-			}
-		}
-
-		return true;
 	}
 
 
@@ -53,6 +38,12 @@ public class ConsistencyCheck {
 				}
 			}
 			/* else: row contains data, ignore it */
+		}
+		
+		/* saving what's left in the stack to display for the user */
+		for (String str: tagStack) {
+			leftTags.add(str);
+			errorsCounter++;
 		}
 		
 		if (tagStack.isEmpty()){

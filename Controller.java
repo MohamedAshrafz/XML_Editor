@@ -86,7 +86,15 @@ public class Controller implements Initializable {
             alert.setContentText("XML file is consistent");
         } else {
 
-            alert.setContentText("XML file is NOT consistent");
+            String msg="XML file is NOT consistent\n" + 
+            "Errors count = " + Integer.toString(checker.errorsCounter) + "\n" +
+            "Error/s in the following tag/s:\n";
+            
+            for (String s : checker.leftTags){
+                msg += s + "\n";
+            }
+
+            alert.setContentText(msg);
         }
         alert.showAndWait();
     }
