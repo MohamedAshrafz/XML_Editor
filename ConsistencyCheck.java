@@ -60,7 +60,7 @@ public class ConsistencyCheck {
 	 * */
 	public static boolean isOpeningTag(String tag) {
 		if (tag.length() > 1){
-			return (tag.charAt(0) == '<' && tag.charAt(1) != '/');
+			return ((tag.charAt(0) == '<') && (tag.charAt(1) != '/') && (tag.charAt(tag.length()-1) == '>'));
 		}
 		return false;
 	}
@@ -72,7 +72,7 @@ public class ConsistencyCheck {
 	 * */
 	public static boolean isClosingTag(String tag) {
 		if (tag.length() > 1){
-			return (tag.charAt(0) == '<' && tag.charAt(1) == '/');
+			return ((tag.charAt(0) == '<') && (tag.charAt(1) == '/') && (tag.charAt(tag.length()-1) == '>'));
 		}
 		return false;
 	}
