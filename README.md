@@ -28,8 +28,8 @@ Since spaces and newlines (\n) are actually characters that can increase the siz
 ## XML to JSON
 JSON((Javascript Object Notation) is a format that is used to represent data, and it's widely used to share structures information over the web.
 Conversion to XML is done on three iterations:
-1- Transform the xml string into array of node objects.
-2- transforms this array into a tree of nodes.
-3- transforms the tree recursively into JSON string
+1. Transform the xml string into array of node objects.
+2. transforms this array into a tree of nodes.
+3. transforms the tree recursively into JSON string
 
 ## Compression/decompression
