@@ -26,7 +26,7 @@ public class ConsistencyCheck {
 	*		if <tag or tag>, then they are not correct
 	*/
 	public boolean tagsCorrectness(){
-                incorrectTags.clear();
+        incorrectTags.clear();
 		errorsCounter=0;
 		boolean isCorrect = true;
 		for (String s : rows){
