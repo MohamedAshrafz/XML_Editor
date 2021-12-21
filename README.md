@@ -33,6 +33,6 @@ Conversion to XML is done on three iterations:
 3. transforms the tree recursively into JSON string
 
 ## Compression/Decompression
-compression using Huffman-Coding
-this type of compression is done using heap (min priority queue) and tree data structure,
-by using variable character sizes we can compress the input file efficiently.
+Compression using Huffman-Coding.
+This type of compression is done using heap (min priority queue) and tree data structure.
+By using variable character sizes we can compress the input file efficiently.
