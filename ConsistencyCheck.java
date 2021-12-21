@@ -5,7 +5,7 @@ public class ConsistencyCheck {
 
 	ArrayList<String> rows = new ArrayList<>();
 	/* in case of inconsistency */
-	ArrayList<String> leftTags = new ArrayList<>();
+	ArrayList<String> incorrectTags = new ArrayList<>();
 	int errorsCounter=0;
 
 
@@ -22,10 +22,39 @@ public class ConsistencyCheck {
 
 
 	/*
+	*  Desc: Check if tags are written correctly i.e. <tag> or </tag>
+	*		if <tag or tag>, then they are not correct
+	*/
+	public boolean tagsCorrectness(){
+		boolean isCorrect = true;
+		for (String s : rows){
+			if (checkData(s)){
+				// <tag
+				if (s.charAt(0) == '<' && s.charAt(s.length()-1) != '>'){
+					incorrectTags.add(s);
+					isCorrect = false;
+					errorsCounter++;	
+				}
+				// tag>
+				else if (s.charAt(0) != '<' && s.charAt(s.length()-1) == '>'){
+					incorrectTags.add(s);
+					isCorrect = false;
+					errorsCounter++;
+				}
+			}
+		}
+
+		return isCorrect;
+	}
+
+
+	/*
 	 * Desc: A function that takes a string and checks if tags are balanced or not,
 	 * 			return true if balanced, false otherwise
 	 * */
 	public boolean checkBalancedTags(){
+		incorrectTags.clear();
+		errorsCounter=0;
 
 		Stack<String> tagStack = new Stack<String> ();
 		boolean neverAddAnything = true;
@@ -55,7 +84,7 @@ public class ConsistencyCheck {
 		
 		/* saving what's left in the stack to display for the user */
 		for (String str: tagStack) {
-			leftTags.add(str);
+			incorrectTags.add(str);
 			errorsCounter++;
 		}
 		

@@ -115,6 +115,18 @@ public class Controller implements Initializable {
             return;
         }
 
+        if (!checker.tagsCorrectness()){
+            StringBuilder msg = new StringBuilder();
+            msg.append("Errors count = ").append(checker.errorsCounter)
+                    .append("\n").append("Correct the following tag/s, then check again:\n");
+
+            for (String s : checker.incorrectTags) {
+                msg.append(s).append("\n");
+            }
+            resultTA.setText(msg.toString());
+        
+        }
+
         if (checker.checkBalancedTags()) {
             alert.setContentText("XML file is consistent");
         } else {
@@ -122,7 +134,7 @@ public class Controller implements Initializable {
             msg.append("Errors count = ").append(checker.errorsCounter)
                     .append("\n").append("Error/s in the following tag/s:\n");
 
-            for (String s : checker.leftTags) {
+            for (String s : checker.incorrectTags) {
                 msg.append(s).append("\n");
             }
 
