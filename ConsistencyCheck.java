@@ -10,7 +10,7 @@ public class ConsistencyCheck {
 
 
 	ConsistencyCheck(String xml){
-	
+
 		String[] rowsArray = xml.trim().replace(" ", "").replaceAll(">", ">\n").replaceAll("<", "\n<").split("\n");
 		/* delete empty rows */
 		for (String s : rowsArray){
@@ -58,36 +58,36 @@ public class ConsistencyCheck {
 
 		Stack<String> tagStack = new Stack<String> ();
 		boolean neverAddAnything = true;
-		
+
 		/* adding tags to stack */
 		for (int i=0; i< rows.size() ; i++) {
 			String currentRow = rows.get(i);
-			
+
 			/* if the tag is opening, just push to stack */
 			if (isOpeningTag(currentRow)) {
 				tagStack.add(currentRow);
 				neverAddAnything = false;
-				
-			}else if (isClosingTag(currentRow)){
+
+			}else if (isClosingTag(currentRow) && !tagStack.isEmpty()){
 				/* if it's a closing tag,,,
 				 * if it corresponds to the peek tag, then pop the peek
 				 * */
-				if (peekMatchTag(tagStack.peek(), currentRow)) {
-					tagStack.pop();
-				}else{
-					tagStack.add(currentRow);
-				}
-
-			}
+                if (peekMatchTag(tagStack.peek(), currentRow))
+                    tagStack.pop();
+                else
+                    tagStack.add(currentRow);
+			}else if (isClosingTag(currentRow)){
+			    tagStack.add(currentRow);
+            }
 			/* else: row contains data, ignore it */
 		}
-		
+
 		/* saving what's left in the stack to display for the user */
 		for (String str: tagStack) {
 			incorrectTags.add(str);
 			errorsCounter++;
 		}
-		
+
 		if (tagStack.isEmpty() && !neverAddAnything){
 			return true;
 		}else{
@@ -122,7 +122,7 @@ public class ConsistencyCheck {
 
 	/**
 	 * Desc: return true if the string is data [not an opening tag nor a closing one]
-	 * 
+	 *
 	 */
 	public static boolean checkData(String s){
 		if (isClosingTag(s) || isOpeningTag(s)){
@@ -131,18 +131,18 @@ public class ConsistencyCheck {
 		return true;
 	}
 
-	
+
 	/*
 	 * Desc: return true if the closing tag {tag} corresponds to the opening tag {stackPeek}
 	 * */
-	public static boolean peekMatchTag(String stackPeek,String tag) {	
+	public static boolean peekMatchTag(String stackPeek,String tag) {
 		String tempTag="";
 		for (int i=0; i<tag.length(); i++) {
 			if (tag.charAt(i) != '/') {
 				tempTag += tag.charAt(i);
 			}
 		}
-		
+
 		return (stackPeek.equals(tempTag));
 	}
 }
