@@ -124,7 +124,7 @@ public class Controller implements Initializable {
                 msg.append(s).append("\n");
             }
             resultTA.setText(msg.toString());
-            break; /* do not check for balanced tags until tags are corrected */
+            return; /* do not check for balanced tags until tags are corrected */
         }
 
         if (checker.checkBalancedTags()) {
