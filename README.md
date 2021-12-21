@@ -32,4 +32,7 @@ Conversion to XML is done on three iterations:
 2. transforms this array into a tree of nodes.
 3. transforms the tree recursively into JSON string
 
-## Compression/decompression
+## Compression/Decompression
+compression using Huffman-Coding
+this type of compression is done using heap (min priority queue) and tree data structure,
+by using variable character sizes we can compress the input file efficiently.
