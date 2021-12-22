@@ -109,12 +109,6 @@ public class Controller implements Initializable {
         alert.setTitle("Consistency check");
         alert.setHeaderText("Consistency check");
 
-        if (xml.isEmpty()) {
-            alert.setContentText("No xml provided");
-            alert.showAndWait();
-            return;
-        }
-
         if (!checker.tagsCorrectness()){
             StringBuilder msg = new StringBuilder();
             msg.append("Errors count = ").append(checker.errorsCounter)
@@ -129,6 +123,7 @@ public class Controller implements Initializable {
 
         if (checker.checkBalancedTags()) {
             alert.setContentText("XML file is consistent");
+            resultTA.clear();
         } else {
             StringBuilder msg = new StringBuilder();
             msg.append("Errors count = ").append(checker.errorsCounter)
@@ -141,6 +136,7 @@ public class Controller implements Initializable {
             alert.setContentText("XML file is NOT consistent");
             resultTA.setText(msg.toString());
         }
+
         alert.showAndWait();
     }
 
@@ -240,7 +236,7 @@ public class Controller implements Initializable {
         if (xml.isEmpty()) {
             Alert alert = new Alert(Alert.AlertType.INFORMATION);
             alert.setTitle("No XML");
-            alert.setHeaderText("You must private an XML text or file");
+            alert.setHeaderText("You must provide an XML text or file");
             alert.setContentText("Provide an XML");
             alert.showAndWait();
             return true;
