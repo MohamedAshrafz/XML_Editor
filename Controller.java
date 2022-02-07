@@ -1,9 +1,12 @@
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.Group;
+import javafx.scene.Scene;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import javafx.scene.control.*;
+import javafx.scene.image.*;
 
 import java.io.*;
 import java.net.URL;
@@ -14,6 +17,7 @@ public class Controller implements Initializable {
     FileChooser fileChooser;
     String xml, xmlOut;
     File input, output;
+    boolean graphReady;
 
     @FXML
     TextArea originalTA = new TextArea();
@@ -229,6 +233,51 @@ public class Controller implements Initializable {
         } else {
             alert.setContentText("You didn't provide a path/s to save/load the files");
             alert.showAndWait();
+        }
+    }
+
+    public void onMakeGraph(ActionEvent e){
+        xml = originalTA.getText();
+        if (checkIfEmpty(xml))
+            return;
+
+        ConsistencyCheck checker = new ConsistencyCheck(xml);
+        if (checker.checkBalancedTags() && !xml.isEmpty()) {
+            synchronized (graph_representation.class) {
+                graph_representation.draw(xml);
+                graphReady = true;
+            }
+        } else {
+            Alert alert = new Alert(Alert.AlertType.INFORMATION);
+            alert.setTitle("Consistency error");
+            alert.setHeaderText("Not consistent");
+            alert.setContentText("The provided XML has to be consistent to be converted to visualized");
+            alert.showAndWait();
+        }
+    }
+
+    public void onVisualize(){
+        if (!graphReady){
+            Alert alert = new Alert(Alert.AlertType.INFORMATION);
+            alert.setTitle("Error");
+            alert.setHeaderText("Graph Missing");
+            alert.setContentText("Please make the graph first");
+            alert.showAndWait();
+            return;
+        }
+
+        Image image;
+        try {
+            image = new Image(new FileInputStream("graph.dot.png"));
+            ImageView iv = new ImageView(image);
+            iv.setPreserveRatio(true);
+            Group root = new Group(iv);
+            Stage s = new Stage();
+            s.setScene(new Scene(root, 600, 500));
+            s.setTitle("Graphical Representation");
+            s.showAndWait();
+        } catch (FileNotFoundException ee) {
+            ee.printStackTrace();
         }
     }
 

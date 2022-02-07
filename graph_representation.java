@@ -2,7 +2,7 @@ import java.io.*;
 import java.util.ArrayList;
 
 public class graph_representation {
-    public ArrayList<ArrayList<Integer>> extract_IDs(String xml_input) {
+    private static ArrayList<ArrayList<Integer>> extract_IDs(String xml_input) {
         ArrayList<ArrayList<Integer>> list = new ArrayList<>();
         ArrayList<Integer> sub_list = new ArrayList<>();
         StringBuffer id_number = new StringBuffer("0");
@@ -24,12 +24,22 @@ public class graph_representation {
         }
         return list;
     }
-    void writeDot(ArrayList<ArrayList<Integer>> list) throws IOException{
+    private static void writeDot(ArrayList<ArrayList<Integer>> list){
         File file = new File("graph.dot");
         if(!file.exists()) {
-            file.createNewFile();
+            try {
+                file.createNewFile();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
         }
-        PrintWriter pw = new PrintWriter(file);
+
+        PrintWriter pw = null;
+        try {
+            pw = new PrintWriter(file);
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        }
         pw.println("digraph {");
         for(int i = 0 ; i < list.size(); i++){
             ArrayList<Integer> small_list = list.get(i);
@@ -41,6 +51,16 @@ public class graph_representation {
         }
         pw.println("}");
         pw.close();
+    }
+
+    public static void draw (String s){
+        ArrayList<ArrayList<Integer>> IDs_list = extract_IDs(s);
+        writeDot(IDs_list);
+        try {
+            Runtime.getRuntime().exec("dot -Tpng -O graph.dot");
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     public static void main(String args[]) throws IOException {
