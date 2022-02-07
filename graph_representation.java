@@ -5,13 +5,17 @@ public class graph_representation {
     public ArrayList<ArrayList<Integer>> extract_IDs(String xml_input) {
         ArrayList<ArrayList<Integer>> list = new ArrayList<>();
         ArrayList<Integer> sub_list = new ArrayList<>();
+        StringBuffer id_number = new StringBuffer("0");
         xml_input = Formatting.format(xml_input);
         xml_input = xml_input.replaceAll("\\s", "");
         for (int i = 0; i < xml_input.length(); i++) {
             if (xml_input.charAt(i) == '<' && xml_input.charAt(i + 1) == 'i' && xml_input.charAt(i + 2) == 'd' && xml_input.charAt(i + 3) == '>') {
-                char c = xml_input.charAt(i + 4);
-                int c_integer = Integer.parseInt(String.valueOf(c));
+                for(int x = (i + 4) ; xml_input.charAt(x) != '<' ; x++){
+                    id_number.append(xml_input.charAt(x));
+                }
+                int c_integer = Integer.parseInt(String.valueOf(id_number));
                 sub_list.add(c_integer);
+                id_number.delete(0 , id_number.length());
             }
             if (xml_input.charAt(i) == '<' && xml_input.charAt(i + 1) == '/' && xml_input.charAt(i + 2) == 'u' && xml_input.charAt(i + 3) == 's' && xml_input.charAt(i + 4) == 'e' && xml_input.charAt(i + 5) == 'r' && xml_input.charAt(i + 6) == '>') {
                 list.add(new ArrayList<>(sub_list));
@@ -42,7 +46,7 @@ public class graph_representation {
     public static void main(String args[]) throws IOException {
         String s = "<users>\n" +
                 "    <user>\n" +
-                "        <id>1</id>\n" +
+                "        <id>145</id>\n" +
                 "        <name>Ahmed Ali</name>\n" +
                 "        <posts>\n" +
                 "            <post>\n" +
@@ -71,15 +75,15 @@ public class graph_representation {
                 "        </posts>\n" +
                 "        <followers>\n" +
                 "            <follower>\n" +
-                "                <id>2</id>\n" +
+                "                <id>26666</id>\n" +
                 "            </follower>\n" +
                 "            <follower>\n" +
-                "                <id>3</id>\n" +
+                "                <id>37876</id>\n" +
                 "            </follower>\n" +
                 "        </followers>\n" +
                 "    </user>\n" +
                 "    <user>\n" +
-                "        <id>2</id>\n" +
+                "        <id>26666</id>\n" +
                 "        <name>Yasser Ahmed</name>\n" +
                 "        <posts>\n" +
                 "            <post>\n" +
@@ -95,12 +99,12 @@ public class graph_representation {
                 "        </posts>\n" +
                 "        <followers>\n" +
                 "            <follower>\n" +
-                "                <id>1</id>\n" +
+                "                <id>145</id>\n" +
                 "            </follower>\n" +
                 "        </followers>\n" +
                 "    </user>\n" +
                 "    <user>\n" +
-                "        <id>3</id>\n" +
+                "        <id>37876</id>\n" +
                 "        <name>Mohamed Sherif</name>\n" +
                 "        <posts>\n" +
                 "            <post>\n" +
@@ -116,7 +120,7 @@ public class graph_representation {
                 "        </posts>\n" +
                 "        <followers>\n" +
                 "            <follower>\n" +
-                "                <id>1</id>\n" +
+                "                <id>145</id>\n" +
                 "            </follower>\n" +
                 "        </followers>\n" +
                 "    </user>\n" +
@@ -126,6 +130,6 @@ public class graph_representation {
         for(int i = 0 ; i < listx.size(); i++) {
             System.out.println(listx.get(i));
         }
-        g.writeDot(listx);
+        //g.writeDot(listx);
     }
 }
